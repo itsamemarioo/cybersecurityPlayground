@@ -6,10 +6,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $username = $_POST["username"]; 
     $password = $_POST["pass"];
 
-    $check = $conn->prepare("SELECT id FROM users WHERE username = ?");
-    $check->bind_param("s", $username);
-    $check->execute();
-    $check->store_result();
+    $check = $conn->prepare("SELECT id FROM users WHERE username = $username");
+    if ($check && $check->num_rows > 0) {
+        $row = $check->fetch_assoc();
+        $message = "Username alreday exists: " . $row["id"];
+    }
+    // $check->execute();
+    // $check->store_result();
 
     if ($check->num_rows > 0) {
         $message = "Username already exists.";
@@ -31,6 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     <title>Register</title>
 </head>
 <body>
+    <?= htmlspecialchars($message) ?><br>
     <form action="register.php" method="POST">
         username: <input type="text" name="username"><br>
         password: <input type="text" name="pass"><br>
