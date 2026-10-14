@@ -5,13 +5,22 @@ $message = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $username = $_POST["username"]; 
     $password = $_POST["pass"];
-    
-    $query = $conn->prepare(
-    "INSERT INTO users (username, password) VALUES (?, ?)");
 
-    $query->bind_param("ss", $username, $password);
-    $query->execute();
+    $check = $conn->prepare("SELECT id FROM users WHERE username = ?");
+    $check->bind_param("s", $username);
+    $check->execute();
+    $check->store_result();
 
+    if ($check->num_rows > 0) {
+        $message = "Username already exists.";
+    } else {
+        $query = $conn->prepare(
+            "INSERT INTO users (username, password) VALUES (?, ?)");
+        $query->bind_param("ss", $username, $password);
+        $query->execute();
+        $message = "Account created!";
+    }
+    $check->close();
 }
 ?>
 <!DOCTYPE html>
