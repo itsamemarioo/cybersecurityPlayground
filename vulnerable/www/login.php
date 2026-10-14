@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <form action="login.php" method="POST">
         username: <input type="text" name="username"><br>
-        password: <input type="password" name="pass"><br>
+        password: <input type="text" name="pass"><br>
         <input type="submit">
     </form>
     <?= $message ?><br>
