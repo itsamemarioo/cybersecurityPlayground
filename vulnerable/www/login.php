@@ -10,8 +10,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "SELECT id, username FROM users WHERE username = '$username' AND password = '$pass'";
 
     try {
-        $result = $conn->query($sql);
-        $user = $result->fetch_assoc();
+        if ($conn->multi_query($sql)) {
+            $user = null;
+            do {
+                if ($result = $conn->store_result()) {
+                    $user = $result->fetch_assoc();
+                    $result->free();
+                }
+            } while ($conn->more_results() && $conn->next_result());
+
+
+        }
+
 
         if ($user) {
             $_SESSION["id"] = $user["id"];

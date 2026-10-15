@@ -42,6 +42,7 @@ $pets = $query->get_result();
 </head>
 <body>
     Welcome <?php echo $username ?><br>
+    <a href="logout.php">Logout</a><br>
     Register Your pet: <br>
     <form action="pets.php" method="POST">
         name: <input type="text" name="name"><br>
@@ -63,7 +64,7 @@ $pets = $query->get_result();
         <tr>
             <td><?= htmlspecialchars($pet["name"]) ?></td>
             <td><?= htmlspecialchars($pet["species"]) ?></td>
-            <td><?= htmlspecialchars($pet["characteristics"]) ?></td>
+            <td><?php echo $pet["characteristics"] ?></td>
         </tr>
     <?php } ?>
 </table>
