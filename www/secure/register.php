@@ -17,7 +17,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     } else {
         $query = $conn->prepare(
             "INSERT INTO users (username, password) VALUES (?, ?)");
-        $query->bind_param("ss", $username, $password);
+        $hash = password_hash($password, PASSWORD_DEFAULT); //changed
+        $query->bind_param("ss", $username, $hash); //changed
         $query->execute();
         $message = "Account created!";
     }
@@ -35,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     <?= htmlspecialchars($message) ?><br>
     <form action="register.php" method="POST">
         username: <input type="text" name="username"><br>
-        password: <input type="text" name="pass"><br>
+        password: <input type="password" name="pass"><br> 
         <input type="submit">
     
 

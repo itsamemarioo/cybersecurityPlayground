@@ -2,6 +2,10 @@
 require "conn.php";
 
 session_start();
+if (!isset($_SESSION["id"])) {
+    header("Location: login.php");
+    exit;
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" ){
  
@@ -41,7 +45,7 @@ $pets = $query->get_result();
     <title>Pets Register</title>
 </head>
 <body>
-    Welcome <?php echo $username ?><br>
+    Welcome <?= htmlspecialchars($username) ?><br>
     <a href="logout.php">Logout</a><br>
     Register Your pet: <br>
     <form action="pets.php" method="POST">
@@ -64,7 +68,7 @@ $pets = $query->get_result();
         <tr>
             <td><?= htmlspecialchars($pet["name"]) ?></td>
             <td><?= htmlspecialchars($pet["species"]) ?></td>
-            <td><?php echo $pet["characteristics"] ?></td>
+            <td><?= htmlspecialchars($pet["characteristics"]) ?></td>
         </tr>
     <?php } ?>
 </table>
